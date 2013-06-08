@@ -1,0 +1,16 @@
+startshape x8
+
+background {b -1}
+
+rule x8 { 8 * {r 45}
+	diagonal {}
+}
+
+rule diagonal {
+	diagonal {s .4 x .64 y .64 r 180 b 4 hue 24 sat 24}
+	square {}
+}
+rule square {
+	SQUARE {b 1 a -.8 b .2 hue -24 sat 24}
+	diagonal {s .8 r 14}
+}
