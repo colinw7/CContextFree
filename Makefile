@@ -4,4 +4,4 @@ all:
 clean:
 	cd src; qmake; make clean
 	rm src/Makefile
-	rm -f bin/CContextFree
+	rm -f bin/CQContextFree
