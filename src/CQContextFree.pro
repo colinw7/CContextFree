@@ -1,6 +1,10 @@
 TEMPLATE = app
-TARGET = 
+
+TARGET = CContextFree
+
 DEPENDPATH += .
+
+QT += widgets
 
 CONFIG += debug
 

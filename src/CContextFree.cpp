@@ -952,7 +952,7 @@ parsePathPart()
       while (! parse_->eof() && ! parse_->isChar(end_char)) {
         PathPart *part = parsePathPart();
 
-        if (! part) return false;
+        if (! part) return 0;
 
         loopParts->addPart(part);
       }
