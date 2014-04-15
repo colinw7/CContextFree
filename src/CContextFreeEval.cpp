@@ -511,7 +511,7 @@ readOp(CStrParse &parse)
   char c;
 
   if (! parse.readChar(&c))
-    return false;
+    return 0;
 
   switch (c) {
     case '+': op = &plus_op_   ; break;
@@ -549,7 +549,7 @@ readOp(CStrParse &parse)
         op = &equals_op_;
       }
       else
-        return false;
+        return 0;
 
       break;
     }
@@ -560,7 +560,7 @@ readOp(CStrParse &parse)
         op = &not_equals_op_;
       }
       else
-        return false;
+        return 0;
 
       break;
     }
@@ -571,7 +571,7 @@ readOp(CStrParse &parse)
         op = &and_op_;
       }
       else
-        return false;
+        return 0;
 
       break;
     }
@@ -582,7 +582,7 @@ readOp(CStrParse &parse)
         op = &or_op_;
       }
       else
-        return false;
+        return 0;
 
       break;
     }

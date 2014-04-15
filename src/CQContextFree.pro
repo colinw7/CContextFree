@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-TARGET = CContextFree
+TARGET = CQContextFree
 
 DEPENDPATH += .
 
