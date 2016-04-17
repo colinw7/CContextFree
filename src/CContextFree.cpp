@@ -2432,6 +2432,7 @@ expand(CContextFree *c, const State &)
 
   std::vector<C3Bezier2D> beziers;
 
+  //CMathGeom2D::ArcToBeziers(cx, cy, rx, ry, a1, a2, beziers);
   CArcToBezier::ArcToBeziers(cx, cy, rx, ry, a1, a2, beziers);
 
   uint num_beziers = beziers.size();
