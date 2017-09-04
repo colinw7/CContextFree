@@ -42,7 +42,7 @@ class CContextFreeCmp {
 
 CContextFree::
 CContextFree() :
- parse_      (NULL),
+ parse_      (nullptr),
  start_shape_(""),
  bg_         (0,0,1,1),
  tile_       (),
@@ -54,7 +54,7 @@ CContextFree() :
  min_size_   (0.3),
  zRuleStack_ (),
  pixelSize_  (1.0),
- path_       (NULL),
+ path_       (nullptr),
  bbox_       ()
 {
   path_ = new CContextFreePath;
@@ -72,7 +72,7 @@ void
 CContextFree::
 reset()
 {
-  delete parse_; parse_ = NULL;
+  delete parse_; parse_ = nullptr;
 
   start_shape_ = "";
 
@@ -80,10 +80,8 @@ reset()
 
   tile_.reset();
 
-  RuleMap::iterator p1, p2;
-
-  for (p1 = rules_.begin(), p2 = rules_.end(); p1 != p2; ++p1)
-    delete (*p1).second;
+  for (auto &rule : rules_)
+    delete rule.second;
 
   rules_.clear();
 
@@ -197,7 +195,7 @@ void
 CContextFree::
 expand()
 {
-  srand(time(NULL));
+  srand(time(nullptr));
 
   num_shapes_ = 0;
 
@@ -205,7 +203,7 @@ expand()
 
   Rule *rule = getRule(name);
 
-  if (rule == NULL) {
+  if (rule == nullptr) {
     error("No start shape : " + name);
     return;
   }
@@ -278,10 +276,8 @@ render()
     }
   }
   else {
-    ZRuleStack::iterator p1, p2;
-
-    for (p1 = zRuleStack_.begin(), p2 = zRuleStack_.end(); p1 != p2; ++p1) {
-      RuleStateStack &ruleStack = (*p1).second;
+    for (auto &zRuleStack : zRuleStack_) {
+      RuleStateStack &ruleStack = zRuleStack.second;
 
       std::sort(ruleStack.begin(), ruleStack.end(), CContextFreeCmp());
 
@@ -302,10 +298,8 @@ renderAt(double x, double y)
 {
   adjustMatrix_ = CMatrix2D::translation(x, y);
 
-  ZRuleStack::iterator p1, p2;
-
-  for (p1 = zRuleStack_.begin(), p2 = zRuleStack_.end(); p1 != p2; ++p1) {
-    RuleStateStack &ruleStack = (*p1).second;
+  for (auto &zRuleStack : zRuleStack_) {
+    RuleStateStack &ruleStack = zRuleStack.second;
 
     uint num = ruleStack.size();
 
@@ -654,16 +648,16 @@ CContextFree::Action *
 CContextFree::
 parseAction()
 {
-  Action *action = NULL;
+  Action *action = nullptr;
 
   if (parse_->isDigit()) {
     int n;
 
-    if (! parse_->readInteger(&n)) return NULL;
+    if (! parse_->readInteger(&n)) return nullptr;
 
     skipSpace();
 
-    if (! parse_->isChar('*')) return NULL;
+    if (! parse_->isChar('*')) return nullptr;
 
     parse_->skipChar();
 
@@ -671,7 +665,7 @@ parseAction()
 
     Adjustment nadj;
 
-    if (! parseAdjustment(nadj)) return NULL;
+    if (! parseAdjustment(nadj)) return nullptr;
 
     if (parse_->isChar('{') || parse_->isChar('[')) {
       char end_char = (parse_->isChar('{') ? '}' : ']');
@@ -682,7 +676,7 @@ parseAction()
 
       Action *action1 = parseAction();
 
-      if (! action1) return NULL;
+      if (! action1) return nullptr;
 
       action = new ComplexLoopAction(n, nadj, action1);
 
@@ -695,11 +689,11 @@ parseAction()
     else {
       std::string name;
 
-      if (! parseName(name)) return NULL;
+      if (! parseName(name)) return nullptr;
 
       Adjustment adj;
 
-      if (! parseAdjustment(adj)) return NULL;
+      if (! parseAdjustment(adj)) return nullptr;
 
       action = new LoopAction(n, nadj, name, adj);
     }
@@ -707,11 +701,11 @@ parseAction()
   else {
     std::string name;
 
-    if (! parseName(name)) return NULL;
+    if (! parseName(name)) return nullptr;
 
     Adjustment adj;
 
-    if (! parseAdjustment(adj)) return NULL;
+    if (! parseAdjustment(adj)) return nullptr;
 
     action = new SimpleAction(name, adj);
   }
@@ -926,11 +920,11 @@ parsePathPart()
   if (parse_->isDigit()) {
     int n;
 
-    if (! parse_->readInteger(&n)) return NULL;
+    if (! parse_->readInteger(&n)) return nullptr;
 
     skipSpace();
 
-    if (! parse_->isChar('*')) return NULL;
+    if (! parse_->isChar('*')) return nullptr;
 
     parse_->skipChar();
 
@@ -938,7 +932,7 @@ parsePathPart()
 
     Adjustment nadj;
 
-    if (! parseAdjustment(nadj)) return NULL;
+    if (! parseAdjustment(nadj)) return nullptr;
 
     if (parse_->isChar('{') || parse_->isChar('[')) {
       char end_char = (parse_->isChar('{') ? '}' : ']');
@@ -968,14 +962,14 @@ parsePathPart()
     else {
       std::string name;
 
-      if (! parseName(name)) return NULL;
+      if (! parseName(name)) return nullptr;
 
       PathOp pathOp = lookupPathOp(name);
 
-      if (pathOp == NO_PATH_OP) return NULL;
+      if (pathOp == NO_PATH_OP) return nullptr;
 
       PathPart *pathPart = parsePathOpPart(pathOp);
-      if (pathPart == NULL) return NULL;
+      if (pathPart == nullptr) return nullptr;
 
       LoopPathPart *loopPart = new LoopPathPart(n, nadj, pathPart);
 
@@ -985,18 +979,18 @@ parsePathPart()
   else {
     std::string name;
 
-    if (! parseName(name)) return NULL;
+    if (! parseName(name)) return nullptr;
 
     PathOp pathOp = lookupPathOp(name);
 
-    if (pathOp == NO_PATH_OP) return NULL;
+    if (pathOp == NO_PATH_OP) return nullptr;
 
     PathPart *pathPart = parsePathOpPart(pathOp);
 
     return pathPart;
   }
 
-  return NULL;
+  return nullptr;
 }
 
 CContextFree::PathPart *
@@ -1005,19 +999,19 @@ parsePathOpPart(PathOp pathOp)
 {
   PathPoints pathPoints;
 
-  if (! parsePathPoints(pathOp, pathPoints)) return NULL;
+  if (! parsePathPoints(pathOp, pathPoints)) return nullptr;
 
-  PathPart *pathPart = NULL;
+  PathPart *pathPart = nullptr;
 
   switch (pathOp) {
     case MOVE_TO_PATH_OP  : pathPart = new MoveToPathPart  (pathPoints); break;
-    case RMOVE_TO_PATH_OP : return NULL;
+    case RMOVE_TO_PATH_OP : return nullptr;
     case LINE_TO_PATH_OP  : pathPart = new LineToPathPart  (pathPoints); break;
-    case RLINE_TO_PATH_OP : return NULL;
+    case RLINE_TO_PATH_OP : return nullptr;
     case ARC_TO_PATH_OP   : pathPart = new ArcToPathPart   (pathPoints); break;
-    case RARC_TO_PATH_OP  : return NULL;
+    case RARC_TO_PATH_OP  : return nullptr;
     case CURVE_TO_PATH_OP : pathPart = new CurveToPathPart (pathPoints); break;
-    case RCURVE_TO_PATH_OP: return NULL;
+    case RCURVE_TO_PATH_OP: return nullptr;
     case CLOSE_PATH_OP    : pathPart = new ClosePathPart   (pathPoints); break;
     case STROKE_PATH_OP   : pathPart = new StrokePathPart  (pathPoints); break;
     case FILL_PATH_OP     : pathPart = new FillPathPart    (pathPoints); break;
@@ -1473,7 +1467,7 @@ getRule(const std::string &id)
     rules_["TRIANGLE"] = new TriangleRule(this, "TRIANGLE");
   }
 
-  RuleMap::iterator p = rules_.find(id);
+  auto p = rules_.find(id);
 
   if (p == rules_.end())
     p = rules_.insert(p, RuleMap::value_type(id, new Rule(this, id)));
@@ -1485,7 +1479,7 @@ CContextFree::Path *
 CContextFree::
 getPath(const std::string &id)
 {
-  RuleMap::iterator p = rules_.find(id);
+  auto p = rules_.find(id);
 
   if (p == rules_.end())
     p = rules_.insert(p, RuleMap::value_type(id, new Path(this, id)));
@@ -1694,7 +1688,7 @@ buildMatrix()
 
 CContextFreeParse::
 CContextFreeParse(CContextFree *c, const string &filename) :
- c_(c), file_(NULL)
+ c_(c), file_(nullptr)
 {
   file_ = new CFile(filename);
 }
@@ -1827,7 +1821,7 @@ CContextFree::ActionList *
 CContextFree::Rule::
 getActionList()
 {
-  ActionList *actionList = NULL;
+  ActionList *actionList = nullptr;
 
   uint num_action_lists = actionLists_.size();
 
@@ -1930,7 +1924,7 @@ exec(CContextFree *c, const State &state)
 
 CContextFree::LoopAction::
 LoopAction(int n, const Adjustment &nadj, const std::string &name, const Adjustment &adj) :
- Action(), n_(n), nadj_(nadj), name_(name), adj_(adj), rule_(NULL)
+ Action(), n_(n), nadj_(nadj), name_(name), adj_(adj), rule_(nullptr)
 {
 }
 
