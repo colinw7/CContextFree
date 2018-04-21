@@ -1,8 +1,8 @@
 #ifndef CEVAL_H
 #define CEVAL_H
 
-#include <deque>
 #include <CRefPtr.h>
+#include <deque>
 
 class CStrParse;
 
@@ -97,7 +97,8 @@ class CEvalOperatorValue : public CEvalValue {
 class CEval {
  public:
   CEval();
- ~CEval();
+
+  virtual ~CEval();
 
   void setDebug(bool debug=true) { debug_ = debug; }
 
@@ -109,7 +110,7 @@ class CEval {
 
   bool eval(const std::string &str, double *result);
 
- private:
+ protected:
   CEval(const CEval &eval);
 
   void reset();
@@ -143,7 +144,7 @@ class CEval {
 
   double randIn(double min_val, double max_val);
 
- private:
+ protected:
   typedef std::deque<CEvalValueRef> ValueStack;
 
   ValueStack  stack_;

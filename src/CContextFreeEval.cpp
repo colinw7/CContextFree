@@ -2,12 +2,6 @@
 #include <CStrParse.h>
 #include <vector>
 #include <cmath>
-#include <cstdlib>
-
-using std::string;
-using std::vector;
-using std::cout;
-using std::endl;
 
 #define DEG_TO_RAD(a) (M_PI*(a)/180.0)
 #define RAD_TO_DEG(a) (180.0*(a)/M_PI)
@@ -62,7 +56,7 @@ reset()
 
 bool
 CEval::
-eval(const string &str, double *result)
+eval(const std::string &str, double *result)
 {
   CEvalValueRef rvalue;
 
@@ -76,7 +70,7 @@ eval(const string &str, double *result)
 
 bool
 CEval::
-eval(const string &str, CEvalValueRef &result)
+eval(const std::string &str, CEvalValueRef &result)
 {
   reset();
 
@@ -186,7 +180,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
 
       int pos2 = parse.getPos();
 
-      string str1 = parse.getAt(pos1 + 1, pos2 - pos1 - 2);
+      std::string str1 = parse.getAt(pos1 + 1, pos2 - pos1 - 2);
 
       CEval eval1(*this);
 
@@ -199,7 +193,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
     }
     // function
     else if (parse.isAlpha()) {
-      string name;
+      std::string name;
 
       if (! parse.readIdentifier(name))
         return false;
@@ -237,9 +231,9 @@ eval1(CStrParse &parse, CEvalValueRef &result)
 
       int pos2 = parse.getPos();
 
-      string str1 = parse.getAt(pos1 + 1, pos2 - pos1 - 2);
+      std::string str1 = parse.getAt(pos1 + 1, pos2 - pos1 - 2);
 
-      vector<string> args;
+      std::vector<std::string> args;
 
       CStrParse parse1(str1);
 
@@ -251,7 +245,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
 
         int pos2 = parse1.getPos();
 
-        string arg = parse1.getAt(pos1, pos2 - pos1);
+        std::string arg = parse1.getAt(pos1, pos2 - pos1);
 
         args.push_back(arg);
 
@@ -261,7 +255,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
 
       uint num_args = args.size();
 
-      vector<CEvalValueRef> arg_vals;
+      std::vector<CEvalValueRef> arg_vals;
 
       for (uint i = 0; i < num_args; ++i) {
         CEval eval1(*this);
@@ -457,8 +451,9 @@ eval1(CStrParse &parse, CEvalValueRef &result)
       else
         return false;
     }
-    else
+    else {
       return false;
+    }
 
     if (getDebug())
       printStack();
@@ -477,18 +472,8 @@ eval1(CStrParse &parse, CEvalValueRef &result)
   while (size > 1) {
     if (size < 3) return false;
 
-    CEvalValueRef value1, value2;
-    CEvalOp*      op;
-
-    bool rc3 = popValue(value2);
-    bool rc2 = popOperator(&op);
-    bool rc1 = popValue(value1);
-
-    if (! rc1 || ! rc2 || ! rc3) return false;
-
-    CEvalValueRef value = evalOperator(value1, op, value2);
-
-    pushValue(value);
+    if (! evalLastOperator())
+      return false;
 
     if (getDebug())
       printStack();
@@ -794,10 +779,10 @@ printStack()
   for (uint i = 0; i < num; ++i) {
     stack_[i]->print();
 
-    cout << " ";
+    std::cout << " ";
   }
 
-  cout << endl;
+  std::cout << "\n";
 }
 
 double
@@ -813,7 +798,7 @@ void
 CEvalRealValue::
 print()
 {
-  cout << value_;
+  std::cout << value_;
 }
 
 //------
@@ -822,7 +807,7 @@ void
 CEvalIntValue::
 print()
 {
-  cout << value_;
+  std::cout << value_;
 }
 
 //------
@@ -831,5 +816,5 @@ void
 CEvalOperatorValue::
 print()
 {
-  cout << op_->str;
+  std::cout << op_->str;
 }
