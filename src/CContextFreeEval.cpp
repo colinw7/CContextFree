@@ -238,14 +238,14 @@ eval1(CStrParse &parse, CEvalValueRef &result)
       CStrParse parse1(str1);
 
       while (! parse1.eof()) {
-        int pos1 = parse1.getPos();
+        int ppos1 = parse1.getPos();
 
         while (! parse1.eof() && ! parse1.isChar(','))
           parse1.skipChar();
 
-        int pos2 = parse1.getPos();
+        int ppos2 = parse1.getPos();
 
-        std::string arg = parse1.getAt(pos1, pos2 - pos1);
+        std::string arg = parse1.getAt(ppos1, ppos2 - ppos1);
 
         args.push_back(arg);
 

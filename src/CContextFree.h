@@ -462,13 +462,13 @@ class CContextFree {
     PartList  parts_;
   };
 
-  class Rule;
-
   class ActionList {
    public:
     ActionList(Rule *rule, double weight=1.0);
 
    ~ActionList();
+
+    Rule *rule() const { return rule_; }
 
     double getWeight() const { return weight_; }
 
@@ -483,8 +483,8 @@ class CContextFree {
    private:
     typedef std::vector<Action *> ActionArray;
 
-    Rule        *rule_;
-    double       weight_;
+    Rule        *rule_   { nullptr };
+    double       weight_ { 1.0 };
     ActionArray  actions_;
   };
 

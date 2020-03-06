@@ -17,6 +17,8 @@ class CContextFreeParse : public CStrParse {
   CContextFreeParse(CContextFree *c, const std::string &filename);
  ~CContextFreeParse();
 
+  CContextFree *context() const { return c_; }
+
   bool eol() const;
   bool eof() const;
 
@@ -24,8 +26,8 @@ class CContextFreeParse : public CStrParse {
   bool fillBuffer();
 
  private:
-  CContextFree *c_;
-  CFile        *file_;
+  CContextFree *c_    { nullptr };
+  CFile        *file_ { nullptr };
 };
 
 class CContextFreeCmp {
@@ -1155,11 +1157,11 @@ parseName(std::string &name)
   name += c;
 
   while (! parse_->eol() && (parse_->isAlpha() || parse_->isDigit() || parse_->isChar('_'))) {
-    char c;
+    char c1;
 
-    parse_->readChar(&c);
+    parse_->readChar(&c1);
 
-    name += c;
+    name += c1;
   }
 
   skipSpace();
