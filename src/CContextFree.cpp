@@ -7,11 +7,6 @@
 #include <CStrParse.h>
 #include <algorithm>
 
-using std::string;
-using std::vector;
-using std::cerr;
-using std::endl;
-
 class CContextFreeParse : public CStrParse {
  public:
   CContextFreeParse(CContextFree *c, const std::string &filename);
@@ -43,21 +38,7 @@ class CContextFreeCmp {
 //------
 
 CContextFree::
-CContextFree() :
- parse_      (nullptr),
- start_shape_(""),
- bg_         (0,0,1,1),
- tile_       (),
- rules_      (),
- ruleStack_  (),
- includes_   (),
- num_shapes_ (0),
- max_shapes_ (500000),
- min_size_   (0.3),
- zRuleStack_ (),
- pixelSize_  (1.0),
- path_       (nullptr),
- bbox_       ()
+CContextFree()
 {
   path_ = new CContextFreePath;
 
@@ -78,7 +59,7 @@ reset()
 
   start_shape_ = "";
 
-  bg_ = CHSVA(0,0,1,1);
+  bg_ = CHSVA(0, 0, 1, 1);
 
   tile_.reset();
 
@@ -233,9 +214,9 @@ expand()
 
     if (! tick()) break;
   }
-cerr << getNumShapes() << endl;
 
-cerr << bbox_ << endl;
+  //std::cerr << getNumShapes() << "\n";
+  //std::cerr << bbox_ << "\n";
 }
 
 void
@@ -645,7 +626,6 @@ parseRule()
   return true;
 }
 
-
 CContextFree::Action *
 CContextFree::
 parseAction()
@@ -1025,7 +1005,7 @@ parsePathOpPart(PathOp pathOp)
 
 CContextFree::PathOp
 CContextFree::
-lookupPathOp(const string &name)
+lookupPathOp(const std::string &name)
 {
   if      (name == "MOVETO")    return MOVE_TO_PATH_OP;
   else if (name == "LINETO")    return LINE_TO_PATH_OP;
@@ -1506,12 +1486,12 @@ dumpRuleStack()
   uint n = ruleStack_.size();
 
   for (uint i = 0; i < n; ++i) {
-    if (i) cerr << " ";
+    if (i) std::cerr << " ";
 
-    cerr << ruleStack_[i].getRule()->getName();
+    std::cerr << ruleStack_[i].getRule()->getName();
   }
 
-  cerr << endl;
+  std::cerr << "\n";
 }
 
 bool
@@ -1549,8 +1529,8 @@ void
 CContextFree::
 error(const std::string &msg) const
 {
-  std::cerr << msg << std::endl;
-  std::cerr << parse_->getBefore() + "[33m^[0m" + parse_->getAt() << std::endl;
+  std::cerr << msg << "\n";
+  std::cerr << parse_->getBefore() + "[33m^[0m" + parse_->getAt() << "\n";
 }
 
 //-------------
@@ -1689,8 +1669,8 @@ buildMatrix()
 //--------------
 
 CContextFreeParse::
-CContextFreeParse(CContextFree *c, const string &filename) :
- c_(c), file_(nullptr)
+CContextFreeParse(CContextFree *c, const std::string &filename) :
+ c_(c)
 {
   file_ = new CFile(filename);
 }
@@ -1705,7 +1685,7 @@ bool
 CContextFreeParse::
 fillBuffer()
 {
-  string line;
+  std::string line;
 
   while (true) {
     if (! file_->readLine(line))
@@ -1727,7 +1707,7 @@ fillBuffer()
   while (len > 0 && line[len - 1] == '\\') {
     line = line.substr(0, len - 1);
 
-    string line1;
+    std::string line1;
 
     if (file_->readLine(line1)) {
       uint len1 = line1.size();
@@ -1781,10 +1761,7 @@ eof() const
 
 CContextFree::Rule::
 Rule(CContextFree *c, const std::string &id) :
- c_          (c),
- id_         (id),
- totalWeight_(0.0),
- actionLists_()
+ c_(c), id_(id)
 {
 }
 
@@ -1926,7 +1903,7 @@ exec(CContextFree *c, const State &state)
 
 CContextFree::LoopAction::
 LoopAction(int n, const Adjustment &nadj, const std::string &name, const Adjustment &adj) :
- Action(), n_(n), nadj_(nadj), name_(name), adj_(adj), rule_(nullptr)
+ Action(), n_(n), nadj_(nadj), name_(name), adj_(adj)
 {
 }
 
@@ -2428,7 +2405,7 @@ expand(CContextFree *c, const State &)
 
   std::vector<C3Bezier2D> beziers;
 
-  //CMathGeom2D::ArcToBeziers(cx, cy, rx, ry, a1, a2, beziers);
+//CMathGeom2D ::ArcToBeziers(cx, cy, rx, ry, a1, a2, beziers);
   CArcToBezier::ArcToBeziers(cx, cy, rx, ry, a1, a2, beziers);
 
   uint num_beziers = beziers.size();

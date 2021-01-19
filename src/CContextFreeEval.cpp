@@ -1,3 +1,5 @@
+// NOTE: copy of CEval.cpp with "rand" renamed to "rand_static"
+
 #include <CContextFreeEval.h>
 #include <CStrParse.h>
 #include <vector>
@@ -22,17 +24,12 @@ static CEvalOp and_op_           = { "&&", 1 };
 static CEvalOp or_op_            = { "||", 0 };
 
 CEval::
-CEval() :
- last_op_   (NULL),
- force_real_(false),
- degrees_   (false),
- debug_     (false)
+CEval()
 {
 }
 
 CEval::
 CEval(const CEval &eval) :
- last_op_   (NULL),
  force_real_(eval.force_real_),
  degrees_   (eval.degrees_),
  debug_     (eval.debug_)
@@ -49,7 +46,7 @@ void
 CEval::
 reset()
 {
-  last_op_ = NULL;
+  last_op_ = nullptr;
 
   stack_.clear();
 }
@@ -111,7 +108,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
     else if (parse.isOneOf("+-*/%<>=!&|^")) {
       CEvalOp *op = readOp(parse);
 
-      if (op == NULL)
+      if (! op)
         return false;
 
       if (hasOperator() || ! hasValue()) {
@@ -452,14 +449,15 @@ eval1(CStrParse &parse, CEvalValueRef &result)
         return false;
     }
     else {
-      return false;
+      if (! handleUnknown(parse))
+        return false;
     }
 
     if (getDebug())
       printStack();
   }
 
-  if (checkLastOperator(NULL)) {
+  if (checkLastOperator(nullptr)) {
     if (! evalLastOperator())
       return false;
 
@@ -491,7 +489,7 @@ CEvalOp *
 CEval::
 readOp(CStrParse &parse)
 {
-  CEvalOp *op = NULL;
+  CEvalOp *op = nullptr;
 
   char c;
 
@@ -627,7 +625,7 @@ void
 CEval::
 updateLastOp()
 {
-  last_op_ = NULL;
+  last_op_ = nullptr;
 
   uint num = stack_.size();
 
@@ -741,8 +739,8 @@ bool
 CEval::
 checkLastOperator(CEvalOp *op)
 {
-  if (last_op_ == NULL) return false;
-  if (op       == NULL) return true ;
+  if (! last_op_) return false;
+  if (! op      ) return true ;
 
   int prec1 = last_op_->precedence;
   int prec2 = op      ->precedence;

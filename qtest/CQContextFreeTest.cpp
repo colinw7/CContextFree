@@ -1,4 +1,6 @@
-#include <CQContextFree.h>
+#include <CQContextFreeTest.h>
+#include <CRGBUtil.h>
+
 #include <QApplication>
 #include <QPainter>
 #include <QPainterPath>
@@ -543,7 +545,7 @@ QColor
 CQContextFree::
 getColor(const CHSVA &hsv)
 {
-  CRGBA rgba = hsv.toRGBA();
+  auto rgba = CRGBUtil::HSVAtoRGBA(hsv);
 
   int r = rgba.getRedI  ();
   int g = rgba.getGreenI();

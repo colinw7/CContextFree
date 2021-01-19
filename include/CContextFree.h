@@ -47,6 +47,8 @@ class COptValT {
 
 class CContextFreePath;
 
+//---
+
 class CContextFree {
  public:
   enum PathOp {
@@ -353,7 +355,7 @@ class CContextFree {
     void exec(CContextFree *c, const State &state);
 
    private:
-    typedef std::vector<PathPart *> PartList;
+    using PartList = std::vector<PathPart *>;
 
     int        n_;
     Adjustment adj_;
@@ -388,9 +390,9 @@ class CContextFree {
     void expand(CContextFree *c, const State &state);
 
    protected:
-    std::string  name_;
-    Adjustment   adj_;
-    Rule        *rule_;
+    std::string name_;
+    Adjustment  adj_;
+    Rule*       rule_ { nullptr };
   };
 
   class LoopAction : public Action {
@@ -412,11 +414,11 @@ class CContextFree {
     void expand(CContextFree *c, const State &state);
 
    private:
-    int          n_;
-    Adjustment   nadj_;
-    std::string  name_;
-    Adjustment   adj_;
-    Rule        *rule_;
+    int         n_    { 0 };
+    Adjustment  nadj_;
+    std::string name_;
+    Adjustment  adj_;
+    Rule*       rule_ { nullptr };
   };
 
   class ComplexLoopAction : public Action {
@@ -456,7 +458,7 @@ class CContextFree {
     void expand(CContextFree *c, const State &state);
 
    private:
-    typedef std::vector<PathPart *> PartList;
+    using PartList = std::vector<PathPart *>;
 
     Path     *path_;
     PartList  parts_;
@@ -481,7 +483,7 @@ class CContextFree {
     void expand(CContextFree *c, const State &state);
 
    private:
-    typedef std::vector<Action *> ActionArray;
+    using ActionArray = std::vector<Action *>;
 
     Rule        *rule_   { nullptr };
     double       weight_ { 1.0 };
@@ -508,12 +510,12 @@ class CContextFree {
     ActionList *getActionList();
 
    protected:
-    typedef std::vector<ActionList *> ActionListArray;
+    using ActionListArray = std::vector<ActionList *>;
 
-    CContextFree    *c_;
-    std::string      id_;
-    double           totalWeight_;
-    ActionListArray  actionLists_;
+    CContextFree*   c_           { nullptr };
+    std::string     id_;
+    double          totalWeight_ { 0.0 };
+    ActionListArray actionLists_;
   };
 
   class SquareRule : public Rule {
@@ -718,24 +720,24 @@ class CContextFree {
   void error(const std::string &msg) const;
 
  private:
-  typedef std::vector<std::string>      StringArray;
-  typedef std::map<std::string, Rule *> RuleMap;
-  typedef std::vector<RuleState>        RuleStateStack;
-  typedef std::map<int,RuleStateStack>  ZRuleStack;
+  using StringArray    = std::vector<std::string>;
+  using RuleMap        = std::map<std::string, Rule *>;
+  using RuleStateStack = std::vector<RuleState>;
+  using ZRuleStack     = std::map<int, RuleStateStack>;
 
-  CContextFreeParse *parse_;
+  CContextFreeParse *parse_       { nullptr };
   std::string        start_shape_;
-  CHSVA              bg_;
+  CHSVA              bg_          { 0, 0, 0 };
   Tile               tile_;
   RuleMap            rules_;
   RuleStateStack     ruleStack_;
   StringArray        includes_;
-  uint               num_shapes_;
-  uint               max_shapes_;
-  double             min_size_;
+  uint               num_shapes_ { 0 };
+  uint               max_shapes_ { 500000 };
+  double             min_size_   { 0.3 };
   ZRuleStack         zRuleStack_;
-  double             pixelSize_;
-  CContextFreePath  *path_;
+  double             pixelSize_  { 1.0 };
+  CContextFreePath  *path_       { nullptr };
   CBBox2D            bbox_;
   CMatrix2D          adjustMatrix_;
 };
@@ -838,7 +840,7 @@ class CContextFreePath {
   const CBBox2D &getBBox() const { return bbox_; }
 
  private:
-  typedef std::vector<CContextFreePathPart *> PartList;
+  using PartList = std::vector<CContextFreePathPart *>;
 
   PartList parts_;
   bool     closed_;

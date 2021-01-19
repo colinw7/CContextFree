@@ -10,14 +10,10 @@ CONFIG += debug
 
 # Input
 SOURCES += \
-CContextFree.cpp \
-CContextFreeEval.cpp \
-CQContextFree.cpp \
+CQContextFreeTest.cpp \
 
 HEADERS += \
-CContextFreeEval.h \
-CContextFree.h \
-CQContextFree.h \
+CQContextFreeTest.h \
 
 DESTDIR     = ../bin
 OBJECTS_DIR = ../obj
@@ -25,12 +21,9 @@ LIB_DIR     = ../lib
 
 INCLUDEPATH += \
 ../include \
-../../CFile/include \
-../../CMath/include \
-../../CStrUtil/include \
-../../COS/include \
-../../CMath/include \
 ../../CUtil/include \
+../../CMath/include \
+../../COS/include \
 .
 
 unix:LIBS += \
@@ -39,6 +32,8 @@ unix:LIBS += \
 -L../../CMath/lib \
 -L../../CStrUtil/lib \
 -L../../COS/lib \
+-lCContextFree \
 -lCFile \
+-lCMath \
 -lCOS \
 -lCStrUtil \
