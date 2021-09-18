@@ -24,12 +24,12 @@ class COptValT {
 
   COptValT(const COptValT &rhs) : value_(rhs.value_), valid_(rhs.valid_) { }
 
-  const COptValT &operator=(const COptValT &rhs) {
+  COptValT &operator=(const COptValT &rhs) {
     value_ = rhs.value_; valid_ = rhs.valid_;
     return *this;
   }
 
-  const COptValT &operator=(const T &value) { setValue(value); return *this; }
+  COptValT &operator=(const T &value) { setValue(value); return *this; }
 
   bool isValid() const { return getValid(); }
 
