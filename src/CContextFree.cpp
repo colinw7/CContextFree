@@ -94,7 +94,7 @@ parse(const std::string &filename)
 
   //------
 
-  uint num_includes = includes_.size();
+  uint num_includes = uint(includes_.size());
 
   for (uint i = 0; i < num_includes; ++i)
     parseFile(includes_[i]);
@@ -178,7 +178,7 @@ void
 CContextFree::
 expand()
 {
-  srand(time(nullptr));
+  srand(uint(time(nullptr)));
 
   num_shapes_ = 0;
 
@@ -204,7 +204,7 @@ expand()
 
     ruleStack_.clear();
 
-    uint n = ruleStack.size();
+    uint n = uint(ruleStack.size());
 
     for (uint i = 0; i < n; ++i) {
       RuleState &ruleState = ruleStack[i];
@@ -264,7 +264,7 @@ render()
 
       std::sort(ruleStack.begin(), ruleStack.end(), CContextFreeCmp());
 
-      uint num = ruleStack.size();
+      uint num = uint(ruleStack.size());
 
       for (uint i = 0; i < num; ++i) {
         RuleState &ruleState = ruleStack[i];
@@ -284,7 +284,7 @@ renderAt(double x, double y)
   for (auto &zRuleStack : zRuleStack_) {
     RuleStateStack &ruleStack = zRuleStack.second;
 
-    uint num = ruleStack.size();
+    uint num = uint(ruleStack.size());
 
     for (uint i = 0; i < num; ++i) {
       RuleState &ruleState = ruleStack[i];
@@ -1483,7 +1483,7 @@ void
 CContextFree::
 dumpRuleStack()
 {
-  uint n = ruleStack_.size();
+  uint n = uint(ruleStack_.size());
 
   for (uint i = 0; i < n; ++i) {
     if (i) std::cerr << " ";
@@ -1691,7 +1691,7 @@ fillBuffer()
     if (! file_->readLine(line))
       return false;
 
-    uint len = line.size();
+    uint len = uint(line.size());
 
     uint i = 0;
 
@@ -1702,7 +1702,7 @@ fillBuffer()
       break;
   }
 
-  uint len = line.size();
+  uint len = uint(line.size());
 
   while (len > 0 && line[len - 1] == '\\') {
     line = line.substr(0, len - 1);
@@ -1710,7 +1710,7 @@ fillBuffer()
     std::string line1;
 
     if (file_->readLine(line1)) {
-      uint len1 = line1.size();
+      uint len1 = uint(line1.size());
 
       uint i = 0;
 
@@ -1720,7 +1720,7 @@ fillBuffer()
       line += " " + line1.substr(0);
     }
 
-    len = line.size();
+    len = uint(line.size());
   }
 
   //if (getPos() == int(getLen())) setString(line);
@@ -1802,7 +1802,7 @@ getActionList()
 {
   ActionList *actionList = nullptr;
 
-  uint num_action_lists = actionLists_.size();
+  uint num_action_lists = uint(actionLists_.size());
 
   if      (num_action_lists == 1) {
     actionList = actionLists_[0];
@@ -1839,7 +1839,7 @@ ActionList(Rule *rule, double weight) :
 CContextFree::ActionList::
 ~ActionList()
 {
-  uint num = actions_.size();
+  uint num = uint(actions_.size());
 
   for (uint i = 0; i < num; ++i)
     delete actions_[i];
@@ -1849,7 +1849,7 @@ void
 CContextFree::ActionList::
 expand(CContextFree *c, const State &state)
 {
-  uint num_actions = actions_.size();
+  uint num_actions = uint(actions_.size());
 
   for (uint i = 0; i < num_actions; ++i) {
     Action *action = actions_[i];
@@ -1862,7 +1862,7 @@ void
 CContextFree::ActionList::
 exec(CContextFree *c, const State &state)
 {
-  uint num_actions = actions_.size();
+  uint num_actions = uint(actions_.size());
 
   for (uint i = 0; i < num_actions; ++i) {
     Action *action = actions_[i];
@@ -2022,7 +2022,7 @@ expand(CContextFree *c, const State &state)
 
   path->clear();
 
-  uint num_parts = parts_.size();
+  uint num_parts = uint(parts_.size());
 
   for (uint i = 0; i < num_parts; ++i)
     parts_[i]->expand(c, state);
@@ -2046,7 +2046,7 @@ exec(CContextFree *c, const State &state)
 
   path->clear();
 
-  uint num_parts = parts_.size();
+  uint num_parts = uint(parts_.size());
 
   for (uint i = 0; i < num_parts; ++i)
     parts_[i]->exec(c, state);
@@ -2408,7 +2408,7 @@ expand(CContextFree *c, const State &)
 //CMathGeom2D ::ArcToBeziers(cx, cy, rx, ry, a1, a2, beziers);
   CArcToBezier::ArcToBeziers(cx, cy, rx, ry, a1, a2, beziers);
 
-  uint num_beziers = beziers.size();
+  uint num_beziers = uint(beziers.size());
 
   for (uint i = 0; i < num_beziers; ++i) {
     const C3Bezier2D &bezier = beziers[i];
@@ -2599,7 +2599,7 @@ LoopPathPartList(int n, const Adjustment &adj) :
 CContextFree::LoopPathPartList::
 ~LoopPathPartList()
 {
-  uint num = parts_.size();
+  uint num = uint(parts_.size());
 
   for (uint i = 0; i < num; ++i)
     delete parts_[i];
@@ -2612,7 +2612,7 @@ expand(CContextFree *c, const State &state)
   State state1 = state;
 
   for (int i = 0; i < n_; ++i) {
-    uint num_parts = parts_.size();
+    uint num_parts = uint(parts_.size());
 
     for (uint j = 0; j < num_parts; ++j)
       parts_[j]->expand(c, state1);
@@ -2628,7 +2628,7 @@ exec(CContextFree *c, const State &state)
   State state1 = state;
 
   for (int i = 0; i < n_; ++i) {
-    uint num_parts = parts_.size();
+    uint num_parts = uint(parts_.size());
 
     for (uint j = 0; j < num_parts; ++j)
       parts_[j]->exec(c, state1);
@@ -2665,7 +2665,7 @@ CContextFreePath::
 clearParts()
 {
   if (! parts_.empty()) {
-    uint num_parts = parts_.size();
+    uint num_parts = uint(parts_.size());
 
     for (uint i = 0; i < num_parts; ++i)
       delete parts_[i];
@@ -2703,7 +2703,7 @@ void
 CContextFreePath::
 strokeBBox(CContextFree *c, const CContextFree::State &state, double w, CBBox2D &bbox)
 {
-  uint num_parts = parts_.size();
+  uint num_parts = uint(parts_.size());
 
   for (uint i = 0; i < num_parts; ++i)
     parts_[i]->updateBBox(c, state, bbox);
@@ -2719,7 +2719,7 @@ stroke(CContextFree *c, const CContextFree::State &state, double w)
 {
   c->pathInit();
 
-  uint num_parts = parts_.size();
+  uint num_parts = uint(parts_.size());
 
   for (uint i = 0; i < num_parts; ++i)
     parts_[i]->addToPath(c);
@@ -2737,7 +2737,7 @@ void
 CContextFreePath::
 fillBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox)
 {
-  uint num_parts = parts_.size();
+  uint num_parts = uint(parts_.size());
 
   for (uint i = 0; i < num_parts; ++i)
     parts_[i]->updateBBox(c, state, bbox);
@@ -2751,7 +2751,7 @@ fill(CContextFree *c, const CContextFree::State &state)
 {
   c->pathInit();
 
-  uint num_parts = parts_.size();
+  uint num_parts = uint(parts_.size());
 
   for (uint i = 0; i < num_parts; ++i)
     parts_[i]->addToPath(c);

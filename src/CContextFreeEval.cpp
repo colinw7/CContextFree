@@ -250,7 +250,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
           parse1.skipChar();
       }
 
-      uint num_args = args.size();
+      uint num_args = uint(args.size());
 
       std::vector<CEvalValueRef> arg_vals;
 
@@ -465,7 +465,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
       printStack();
   }
 
-  uint size = stack_.size();
+  uint size = uint(stack_.size());
 
   while (size > 1) {
     if (size < 3) return false;
@@ -476,7 +476,7 @@ eval1(CStrParse &parse, CEvalValueRef &result)
     if (getDebug())
       printStack();
 
-    size = stack_.size();
+    size = uint(stack_.size());
   }
 
   if (! popValue(result))
@@ -627,7 +627,7 @@ updateLastOp()
 {
   last_op_ = nullptr;
 
-  uint num = stack_.size();
+  uint num = uint(stack_.size());
 
   for (uint i = 0; i < num; ++i) {
     CEvalValueRef value = stack_[i];
@@ -772,7 +772,7 @@ void
 CEval::
 printStack()
 {
-  uint num = stack_.size();
+  uint num = uint(stack_.size());
 
   for (uint i = 0; i < num; ++i) {
     stack_[i]->print();
