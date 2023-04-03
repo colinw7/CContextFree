@@ -15,7 +15,7 @@ class CContextFreeParse : public CStrParse {
   CContextFree *context() const { return c_; }
 
   bool eol() const;
-  bool eof() const;
+  bool eof() const override;
 
  private:
   bool fillBuffer();
@@ -928,7 +928,7 @@ parsePathPart()
       while (! parse_->eof() && ! parse_->isChar(end_char)) {
         PathPart *part = parsePathPart();
 
-        if (! part) return 0;
+        if (! part) return nullptr;
 
         loopParts->addPart(part);
       }

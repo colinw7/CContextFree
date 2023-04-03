@@ -191,11 +191,11 @@ class CContextFree {
       y_ = p.y.getValue(0.0);
     }
 
-    bool isMoveTo() const { return true; }
+    bool isMoveTo() const override { return true; }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     double x_, y_;
@@ -209,9 +209,9 @@ class CContextFree {
       y_ = p.y.getValue(0.0);
     }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     double x_, y_;
@@ -246,9 +246,9 @@ class CContextFree {
       if (p.p.hasArg("cw")) cw_ = true;
     }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     double x_, y_, rx_, ry_, a_;
@@ -274,9 +274,9 @@ class CContextFree {
       }
     }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     double x_, y_, x1_, y1_, x2_, y2_;
@@ -289,9 +289,9 @@ class CContextFree {
      PathPart(CLOSE_PATH_OP) {
     }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
   };
 
   class StrokePathPart : public PathPart {
@@ -301,9 +301,9 @@ class CContextFree {
       w_ = p.width;
     }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     Adjustment       adj_;
@@ -317,9 +317,9 @@ class CContextFree {
       if (p.p.hasArg("evenodd")) evenodd_ = true;
     }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     Adjustment adj_;
@@ -332,9 +332,9 @@ class CContextFree {
 
    ~LoopPathPart();
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     int         n_;
@@ -350,9 +350,9 @@ class CContextFree {
 
     void addPart(PathPart *part) { parts_.push_back(part); }
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
    private:
     using PartList = std::vector<PathPart *>;
@@ -385,9 +385,9 @@ class CContextFree {
 
     const Adjustment &getAdjustment() const { return adj_; }
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
    protected:
     std::string name_;
@@ -409,9 +409,9 @@ class CContextFree {
 
     const Adjustment &getAdjustment() const { return adj_; }
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
    private:
     int         n_    { 0 };
@@ -433,9 +433,9 @@ class CContextFree {
 
     Action *getAction() const { return action_; }
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
    private:
     int         n_;
@@ -453,9 +453,9 @@ class CContextFree {
 
     void addPart(PathPart *part);
 
-    void exec(CContextFree *c, const State &state);
+    void exec(CContextFree *c, const State &state) override;
 
-    void expand(CContextFree *c, const State &state);
+    void expand(CContextFree *c, const State &state) override;
 
    private:
     using PartList = std::vector<PathPart *>;
@@ -522,33 +522,33 @@ class CContextFree {
    public:
     SquareRule(CContextFree *c, const std::string &id);
 
-    bool isBasic() const;
+    bool isBasic() const override;
 
-    void expand(const State &state);
+    void expand(const State &state) override;
 
-    void exec(const State &state);
+    void exec(const State &state) override;
   };
 
   class CircleRule : public Rule {
    public:
     CircleRule(CContextFree *c, const std::string &id);
 
-    bool isBasic() const;
+    bool isBasic() const override;
 
-    void expand(const State &state);
+    void expand(const State &state) override;
 
-    void exec(const State &state);
+    void exec(const State &state) override;
   };
 
   class TriangleRule : public Rule {
    public:
     TriangleRule(CContextFree *c, const std::string &id);
 
-    bool isBasic() const;
+    bool isBasic() const override;
 
-    void expand(const State &state);
+    void expand(const State &state) override;
 
-    void exec(const State &state);
+    void exec(const State &state) override;
   };
 
   class RuleState {
@@ -580,11 +580,11 @@ class CContextFree {
    public:
     Path(CContextFree *c, const std::string &name);
 
-    bool isBasic() const { return true; }
+    bool isBasic() const override { return true; }
 
-    void expand(const State &state);
+    void expand(const State &state) override;
 
-    void exec(const State &state);
+    void exec(const State &state) override;
   };
 
  public:
@@ -759,9 +759,9 @@ class CContextFreePathMoveTo : public CContextFreePathPart {
  public:
   CContextFreePathMoveTo(double x, double y);
 
-  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox);
+  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox) override;
 
-  void addToPath(CContextFree *c);
+  void addToPath(CContextFree *c) override;
 
  private:
   double x_, y_;
@@ -771,9 +771,9 @@ class CContextFreePathLineTo : public CContextFreePathPart {
  public:
   CContextFreePathLineTo(double x, double y);
 
-  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox);
+  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox) override;
 
-  void addToPath(CContextFree *c);
+  void addToPath(CContextFree *c) override;
 
  private:
   double x_, y_;
@@ -783,9 +783,9 @@ class CContextFreePathCurve3To : public CContextFreePathPart {
  public:
   CContextFreePathCurve3To(double x2, double y2, double x3, double y3, double x4, double y4);
 
-  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox);
+  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox) override;
 
-  void addToPath(CContextFree *c);
+  void addToPath(CContextFree *c) override;
 
  private:
   double x2_, y2_, x3_, y3_, x4_, y4_;
@@ -795,9 +795,9 @@ class CContextFreePathClose : public CContextFreePathPart {
  public:
   CContextFreePathClose();
 
-  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox);
+  void updateBBox(CContextFree *c, const CContextFree::State &state, CBBox2D &bbox) override;
 
-  void addToPath(CContextFree *c);
+  void addToPath(CContextFree *c) override;
 };
 
 class CContextFreePath {

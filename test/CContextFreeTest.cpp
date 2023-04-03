@@ -14,19 +14,19 @@ class CContextFreeTest : public CContextFree {
   void endRule  (Rule *rule);
 
   void fillSquare  (double x1, double y1, double x2, double y2, const CMatrix2D &m,
-                    const CHSVA &hsv);
-  void fillCircle  (double x, double y, double r, const CMatrix2D &m, const CHSVA &hsv);
+                    const CHSVA &hsv) override;
+  void fillCircle  (double x, double y, double r, const CMatrix2D &m, const CHSVA &hsv) override;
   void fillTriangle(double x1, double y1, double x2, double y2, double x3, double y3,
-                    const CMatrix2D &m, const CHSVA &hsv);
+                    const CMatrix2D &m, const CHSVA &hsv) override;
 
-  void pathInit   ();
-  void pathTerm   ();
-  void pathMoveTo (double x, double y);
-  void pathLineTo (double x, double y);
-  void pathCurveTo(double x, double y, double x1, double y1, double x2, double y2);
-  void pathClose  ();
-  void pathStroke (const CHSVA &hsv, const CMatrix2D &m, double w);
-  void pathFill   (const CHSVA &hsv, const CMatrix2D &m);
+  void pathInit   () override;
+  void pathTerm   () override;
+  void pathMoveTo (double x, double y) override;
+  void pathLineTo (double x, double y) override;
+  void pathCurveTo(double x, double y, double x1, double y1, double x2, double y2) override;
+  void pathClose  () override;
+  void pathStroke (const CHSVA &hsv, const CMatrix2D &m, double w) override;
+  void pathFill   (const CHSVA &hsv, const CMatrix2D &m) override;
 
  private:
   int         id_ { 0 };
@@ -79,8 +79,8 @@ process(const char *filename)
 
   double s = std::min(sx, sy);
 
-  int dx = (pw - s*w)/2;
-  int dy = (ph - s*h)/2;
+  int dx = int((pw - s*w)/2);
+  int dy = int((ph - s*h)/2);
 
   CMatrix2D m1 = CMatrix2D::translation(dx, dy);
   CMatrix2D m2 = CMatrix2D::scale(s, -s);
